@@ -1,0 +1,6 @@
+streamlit==1.38.0
+plotly==5.3.1
+pandas==2.1.4
+numerize==0.12
+streamlit-option-menu==0.3.13
+streamlit-gsheets
