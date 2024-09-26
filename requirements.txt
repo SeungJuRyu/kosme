@@ -1,6 +1,0 @@
-streamlit==1.38.0
-plotly==5.3.1
-pandas==2.1.4
-mysql-connector-python==9.0.0
-numerize==0.12
-streamlit-option-menu==0.3.13
