@@ -96,7 +96,7 @@ def Home():
 
     총매출액 = 매출액_2023년_numeric.sum()
     매출액 = 매출액_2023년_numeric.mean()
-    일인당매출액 = 일인당매출액_2023년_numeric.mean()
+    일인당매출액 = 매출액_2023년_numeric.sum()/종업원수_2023년_numeric.sum()
     영업이익 = 영업이익_2023년_numeric.sum()
     종업원수 = 종업원수_2023년_numeric.sum()
 
