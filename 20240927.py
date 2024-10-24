@@ -274,14 +274,14 @@ def plot_box_plots():
                 x='지원여부',  # x축은 지원 카테고리
                 y='매출액증가율_2023년',
                 color='지원유형',  # 카테고리별로 색상 구분
-                title='매출액 증가율 (2023년)',
+                title='',  # 제목 제거
                 color_discrete_sequence=px.colors.qualitative.Set2,  # 더 명확한 색상 세트
                 template="plotly_white"
             )
             fig_sales_growth.update_layout(
                 xaxis_title="지원 유형",
                 yaxis_title="매출액 증가율 (%)",
-                title_font_size=16  # 제목 크기를 16으로 조정
+                title_font_size=20
             )
             st.plotly_chart(fig_sales_growth, use_container_width=True)
 
@@ -302,14 +302,14 @@ def plot_box_plots():
                 x='지원여부',  # x축은 지원 카테고리
                 y='영업이익율_2023년',
                 color='지원유형',  # 카테고리별로 색상 구분
-                title='영업이익율 (2023년)',
+                title='',  # 제목 제거
                 color_discrete_sequence=px.colors.qualitative.Set2,  # 더 명확한 색상 세트
                 template="plotly_white"
             )
             fig_profit_margin.update_layout(
                 xaxis_title="지원 유형",
                 yaxis_title="영업이익율 (%)",
-                title_font_size=16  # 제목 크기를 16으로 조정
+                title_font_size=20
             )
             st.plotly_chart(fig_profit_margin, use_container_width=True)
 
