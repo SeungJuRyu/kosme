@@ -301,7 +301,6 @@ def plot_box_plots():
                 y='영업이익율_2023년',
                 title="영업이익율_2023년",
                 color='지원유형',  # 카테고리별로 색상 구분
-                title='',  # 제목 제거
                 color_discrete_sequence=px.colors.qualitative.Set2,  # 더 명확한 색상 세트
                 template="plotly_white"
             )
