@@ -158,7 +158,7 @@ def graph_and_table_row():
             st.plotly_chart(fig_sales, use_container_width=True)
         with tab2:
             st.subheader("컨설팅지원별 데이터")
-            st.dataframe(df_selection_reset[["컨설팅지원", "매출액_2023년"]])
+            st.dataframe(df_selection_reset[["기업명", "컨설팅지원", "매출액_2023년"]], hide_index=True)
 
     with right1:
         tab3, tab4 = st.tabs(["Graph", "Table"])
@@ -183,7 +183,7 @@ def graph_and_table_row():
             st.plotly_chart(fig_tech, use_container_width=True)
         with tab4:
             st.subheader("기술지원별 데이터")
-            st.dataframe(df_selection_reset[["기술지원", "매출액_2023년"]])
+            st.dataframe(df_selection_reset[["기업명", "기술지원", "매출액_2023년"]], hide_index=True)
 
     # 두 번째 줄
     left2, right2 = st.columns(2)
@@ -211,7 +211,7 @@ def graph_and_table_row():
             st.plotly_chart(fig_marketing, use_container_width=True)
         with tab6:
             st.subheader("마케팅지원별 데이터")
-            st.dataframe(df_selection_reset[["마케팅지원", "매출액_2023년"]])
+            st.dataframe(df_selection_reset[["기업명", "마케팅지원", "매출액_2023년"]], hide_index=True)
 
     with right2:
         tab7, tab8 = st.tabs(["Graph", "Table"])
@@ -237,7 +237,7 @@ def graph_and_table_row():
             st.plotly_chart(fig_location, use_container_width=True)
         with tab8:
             st.subheader("소재지별 데이터")
-            st.dataframe(df_selection_reset[["소재지", "매출액_2023년"]])
+            st.dataframe(df_selection_reset[["기업명", "소재지", "매출액_2023년"]], hide_index=True)
 
 graph_and_table_row()
 
@@ -291,7 +291,7 @@ def plot_box_plots():
 
         # 테이블 탭
         with tab2:
-            st.dataframe(df_selection_filtered[['기업명', '지원유형', '매출액증가율_2023년']])
+            st.dataframe(df_selection_filtered[['기업명', '지원유형', '매출액증가율_2023년']], hide_index=True)
 
     # 오른쪽: 영업이익율
     with right_col:
@@ -317,7 +317,7 @@ def plot_box_plots():
 
         # 테이블 탭
         with tab4:
-            st.dataframe(df_selection_filtered[['기업명', '지원유형', '영업이익율_2023년']])
+            st.dataframe(df_selection_filtered[['기업명', '지원유형', '영업이익율_2023년']], hide_index=True)
 
 # 함수 호출하여 박스 플롯과 테이블을 좌우로 배치하여 표시
 plot_box_plots()
