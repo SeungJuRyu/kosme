@@ -81,13 +81,13 @@ df_selection = df.query(
 def convert_to_numeric(column):
     return pd.to_numeric(df_selection[column], errors='coerce').fillna(0)
 
-# Home 함수 (상단에 테이블이나 메트릭 등을 표시하는 부분)
+# Home 함수
 def Home():
     with st.expander("Tabular"):
         showData = st.multiselect('Filter: ', df_selection.columns, default=[])
         st.write(df_selection[showData])
 
-    # 숫자로 변환 후 계산
+  # 숫자로 변환 후 계산
     매출액_2023년_numeric = convert_to_numeric("매출액_2023년")
     일인당매출액_2023년_numeric = convert_to_numeric("1인당매출액_2023년")
     영업이익_2023년_numeric = convert_to_numeric("영업이익_2023년")
@@ -95,7 +95,7 @@ def Home():
 
     총매출액 = 매출액_2023년_numeric.sum()
     매출액 = 매출액_2023년_numeric.mean()
-    일인당매출액 = 매출액_2023년_numeric.sum() / 종업원수_2023년_numeric.sum()
+    일인당매출액 = 매출액_2023년_numeric.sum()/종업원수_2023년_numeric.sum()
     영업이익 = 영업이익_2023년_numeric.sum()
     종업원수 = 종업원수_2023년_numeric.sum()
 
@@ -233,3 +233,90 @@ def graph_and_table_row():
             st.dataframe(df_selection[["소재지", "매출액_2023년"]])
 
 graph_and_table_row()
+
+# 데이터프레임으로 변환
+df = pd.DataFrame(data)
+
+# '매출액증가율_2023년'과 '영업이익율_2023년'을 숫자형으로 변환
+df['매출액증가율_2023년'] = pd.to_numeric(df['매출액증가율_2023년'], errors='coerce').fillna(0)
+df['영업이익율_2023년'] = pd.to_numeric(df['영업이익율_2023년'], errors='coerce').fillna(0)
+
+# 각 지원 항목에서 '미지원' 제외하고 다른 항목들은 하나의 그룹으로 묶기
+df['컨설팅지원'] = df['컨설팅지원'].apply(lambda x: '컨설팅지원' if x != '미지원' else '미지원')
+df['기술지원'] = df['기술지원'].apply(lambda x: '기술지원' if x != '미지원' else '미지원')
+df['마케팅지원'] = df['마케팅지원'].apply(lambda x: '마케팅지원' if x != '미지원' else '미지원')
+
+# 지원 항목별로 x축을 구성한 새로운 컬럼 추가
+df_melted = pd.melt(
+    df,
+    id_vars=['기업명', '매출액증가율_2023년', '영업이익율_2023년'],
+    value_vars=['컨설팅지원', '기술지원', '마케팅지원'],
+    var_name='지원유형',
+    value_name='지원여부'
+)
+
+# 필터링된 데이터셋을 사용 (필터는 필요에 따라 추가 가능)
+df_selection = df_melted[df_melted['지원여부'] != '미지원']  # 미지원 제외
+
+# 박스 플롯과 테이블 배치를 왼쪽과 오른쪽에 구성
+def plot_box_plots():
+    # 왼쪽: 매출액 증가율
+    left_col, right_col = st.columns(2)
+
+    with left_col:
+        st.subheader("매출액 증가율 (2023년)")
+        tab1, tab2 = st.tabs(["Graph", "Table"])
+
+        # 그래프 탭
+        with tab1:
+            fig_sales_growth = px.box(
+                df_selection,
+                x='지원여부',  # x축은 지원 카테고리
+                y='매출액증가율_2023년',
+                color='지원유형',  # 카테고리별로 색상 구분
+                title='매출액 증가율 (2023년)',
+                color_discrete_sequence=px.colors.qualitative.Set2,  # 더 명확한 색상 세트
+                template="plotly_white"
+            )
+            fig_sales_growth.update_layout(
+                xaxis_title="지원 유형",
+                yaxis_title="매출액 증가율 (%)",
+                title_font_size=18
+            )
+            st.plotly_chart(fig_sales_growth, use_container_width=True)
+
+        # 테이블 탭
+        with tab2:
+            st.subheader("매출액 증가율 데이터")
+            st.dataframe(df_selection[['기업명', '지원유형', '매출액증가율_2023년']])
+
+    # 오른쪽: 영업이익율
+    with right_col:
+        st.subheader("영업이익율 (2023년)")
+        tab3, tab4 = st.tabs(["Graph", "Table"])
+
+        # 그래프 탭
+        with tab3:
+            fig_profit_margin = px.box(
+                df_selection,
+                x='지원여부',  # x축은 지원 카테고리
+                y='영업이익율_2023년',
+                color='지원유형',  # 카테고리별로 색상 구분
+                title='영업이익율 (2023년)',
+                color_discrete_sequence=px.colors.qualitative.Set2,  # 더 명확한 색상 세트
+                template="plotly_white"
+            )
+            fig_profit_margin.update_layout(
+                xaxis_title="지원 유형",
+                yaxis_title="영업이익율 (%)",
+                title_font_size=18
+            )
+            st.plotly_chart(fig_profit_margin, use_container_width=True)
+
+        # 테이블 탭
+        with tab4:
+            st.subheader("영업이익율 데이터")
+            st.dataframe(df_selection[['기업명', '지원유형', '영업이익율_2023년']])
+
+# 함수 호출하여 박스 플롯과 테이블을 좌우로 배치하여 표시
+plot_box_plots()
