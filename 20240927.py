@@ -260,9 +260,10 @@ df_selection = df_melted[df_melted['지원여부'] != '미지원']  # 미지원 
 
 # 박스 플롯과 테이블 배치를 왼쪽과 오른쪽에 구성
 def plot_box_plots():
-    # 왼쪽: 매출액 증가율
+    # 그래프와 테이블을 좌우로 나누기
     left_col, right_col = st.columns(2)
 
+    # 왼쪽: 매출액 증가율
     with left_col:
         tab1, tab2 = st.tabs(["Graph", "Table"])
 
@@ -272,9 +273,8 @@ def plot_box_plots():
                 df_selection,
                 x='지원여부',  # x축은 지원 카테고리
                 y='매출액증가율_2023년',
-                title="매출액증가율_2023년",
                 color='지원유형',  # 카테고리별로 색상 구분
-                title='',  # 제목 제거
+                title='매출액 증가율 (2023년)',  # 제목을 여기에 표시
                 color_discrete_sequence=px.colors.qualitative.Set2,  # 더 명확한 색상 세트
                 template="plotly_white"
             )
@@ -299,8 +299,8 @@ def plot_box_plots():
                 df_selection,
                 x='지원여부',  # x축은 지원 카테고리
                 y='영업이익율_2023년',
-                title="영업이익율_2023년",
                 color='지원유형',  # 카테고리별로 색상 구분
+                title='영업이익율 (2023년)',  # 제목을 여기에 표시
                 color_discrete_sequence=px.colors.qualitative.Set2,  # 더 명확한 색상 세트
                 template="plotly_white"
             )
