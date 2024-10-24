@@ -264,7 +264,6 @@ def plot_box_plots():
     left_col, right_col = st.columns(2)
 
     with left_col:
-        st.subheader("매출액 증가율 (2023년)")
         tab1, tab2 = st.tabs(["Graph", "Table"])
 
         # 그래프 탭
@@ -287,12 +286,10 @@ def plot_box_plots():
 
         # 테이블 탭
         with tab2:
-            st.subheader("매출액 증가율 데이터")
             st.dataframe(df_selection[['기업명', '지원유형', '매출액증가율_2023년']])
 
     # 오른쪽: 영업이익율
     with right_col:
-        st.subheader("영업이익율 (2023년)")
         tab3, tab4 = st.tabs(["Graph", "Table"])
 
         # 그래프 탭
@@ -315,7 +312,6 @@ def plot_box_plots():
 
         # 테이블 탭
         with tab4:
-            st.subheader("영업이익율 데이터")
             st.dataframe(df_selection[['기업명', '지원유형', '영업이익율_2023년']])
 
 # 함수 호출하여 박스 플롯과 테이블을 좌우로 배치하여 표시
