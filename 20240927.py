@@ -258,23 +258,36 @@ df_selection_melted = pd.melt(
     var_name='지원유형',
     value_name='지원여부'
 )
+# 로그 스케일 적용을 위한 데이터 필터링 함수 (음수와 0을 제외)
+def filter_positive_values(df, column):
+    # 해당 컬럼에서 0과 음수 값을 제외하고 양수 값만 필터링
+    return df[df[column] > 0]
 
-# 필터링된 데이터셋을 사용
-df_selection_filtered = df_selection_melted[df_selection_melted['지원여부'] != '미지원']
+# 미지원 항목을 제외하는 필터링 함수
+def filter_non_supported(df):
+    return df[df['지원여부'] != '미지원']
 
 # 박스 플롯과 테이블 배치를 왼쪽과 오른쪽에 구성
 def plot_box_plots():
+    # 기존 필터링된 데이터프레임에서 melt된 df_selection_melted 사용
+    df_positive_sales_growth = filter_positive_values(df_selection_melted, '매출액증가율_2023년')
+    df_positive_profit_margin = filter_positive_values(df_selection_melted, '영업이익율_2023년')
+
+    # 미지원 항목을 제외한 데이터만 사용
+    df_positive_sales_growth = filter_non_supported(df_positive_sales_growth)
+    df_positive_profit_margin = filter_non_supported(df_positive_profit_margin)
+
     # 그래프와 테이블을 좌우로 나누기
     left_col, right_col = st.columns(2)
 
-    # 왼쪽: 매출액 증가율
+    # 왼쪽: 매출액 증가율 (양수 값만 로그 스케일 적용)
     with left_col:
         tab1, tab2 = st.tabs(["Graph", "Table"])
 
         # 그래프 탭
         with tab1:
             fig_sales_growth = px.box(
-                df_selection_filtered,
+                df_positive_sales_growth,
                 x='지원여부',
                 y='매출액증가율_2023년',
                 color='지원유형',
@@ -282,25 +295,27 @@ def plot_box_plots():
                 color_discrete_sequence=px.colors.qualitative.Set2,
                 template="plotly_white"
             )
+            # 로그 스케일 적용
             fig_sales_growth.update_layout(
                 xaxis_title="지원 유형",
                 yaxis_title="매출액 증가율 (%)",
-                title_font_size=20
+                title_font_size=20,
+                yaxis=dict(type='log')  # 로그 스케일 적용
             )
             st.plotly_chart(fig_sales_growth, use_container_width=True)
 
         # 테이블 탭
         with tab2:
-            st.dataframe(df_selection_filtered[['기업명', '지원유형', '매출액증가율_2023년']], hide_index=True)
+            st.dataframe(df_positive_sales_growth[['기업명', '지원유형', '매출액증가율_2023년']], hide_index=True)
 
-    # 오른쪽: 영업이익율
+    # 오른쪽: 영업이익율 (양수 값만 로그 스케일 적용)
     with right_col:
         tab3, tab4 = st.tabs(["Graph", "Table"])
 
         # 그래프 탭
         with tab3:
             fig_profit_margin = px.box(
-                df_selection_filtered,
+                df_positive_profit_margin,
                 x='지원여부',
                 y='영업이익율_2023년',
                 color='지원유형',
@@ -308,16 +323,18 @@ def plot_box_plots():
                 color_discrete_sequence=px.colors.qualitative.Set2,
                 template="plotly_white"
             )
+            # 로그 스케일 적용
             fig_profit_margin.update_layout(
                 xaxis_title="지원 유형",
                 yaxis_title="영업이익율 (%)",
-                title_font_size=20
+                title_font_size=20,
+                yaxis=dict(type='log')  # 로그 스케일 적용
             )
             st.plotly_chart(fig_profit_margin, use_container_width=True)
 
         # 테이블 탭
         with tab4:
-            st.dataframe(df_selection_filtered[['기업명', '지원유형', '영업이익율_2023년']], hide_index=True)
+            st.dataframe(df_positive_profit_margin[['기업명', '지원유형', '영업이익율_2023년']], hide_index=True)
 
 # 함수 호출하여 박스 플롯과 테이블을 좌우로 배치하여 표시
 plot_box_plots()
