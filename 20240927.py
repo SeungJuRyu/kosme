@@ -93,6 +93,32 @@ def Home():
     with st.expander("Tabular"):
         showData = st.multiselect('Filter: ', df_selection.columns, default=[])
         st.write(df_selection[showData])
+
+        # 통계 계산 옵션 활성화 체크박스
+        calculate_stats = st.checkbox("선택된 컬럼에 대한 통계 계산 활성화")
+
+        if calculate_stats:
+            # 통계 제목의 글씨 크기를 조절 (작게 설정)
+            st.markdown('<p style="font-size:16px; font-weight:bold;">기술 통계</p>', unsafe_allow_html=True)
+            
+            # 수치형 컬럼만 필터링하여 기본 통계 계산
+            numeric_columns = df_selection_reset[showData].select_dtypes(include=['float64', 'int64']).columns
+            
+            if not numeric_columns.empty:
+                for col in numeric_columns:
+                # 각 수치형 컬럼에 대한 기본 통계 계산
+                    total_sum = df_selection_reset[col].sum()
+                    mean_value = df_selection_reset[col].mean()
+                    max_value = df_selection_reset[col].max()
+                    min_value = df_selection_reset[col].min()
+
+                # 컬럼별 통계 정보를 표시
+                    st.write(f"**{col}**")
+                    st.write(f"- 합계: {total_sum:,.2f}")
+                    st.write(f"- 평균: {mean_value:,.2f}")
+                    st.write(f"- 최댓값: {max_value:,.2f}")
+                    st.write(f"- 최솟값: {min_value:,.2f}")
+                    st.markdown("---")
         
     # 숫자로 변환 후 계산
     매출액_2023년_numeric = convert_to_numeric("매출액_2023년")
