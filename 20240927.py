@@ -95,7 +95,7 @@ def Home():
         st.write(df_selection[showData])
 
         # 통계 계산 옵션 활성화 체크박스
-        calculate_stats = st.checkbox("선택된 컬럼에 대한 통계 계산 활성화")
+        calculate_stats = st.checkbox("선택된 컬럼 통계 보기")
 
         if calculate_stats:
             # 통계 제목의 글씨 크기를 조절 (작게 설정)
