@@ -280,7 +280,7 @@ def plot_box_plots():
     # 그래프와 테이블을 좌우로 나누기
     left_col, right_col = st.columns(2)
 
-    # 왼쪽: 매출액 증가율 (양수 값만 로그 스케일 적용)
+    # 왼쪽: 매출액 증가율 (로그 스케일 적용 + 눈금 조정)
     with left_col:
         tab1, tab2 = st.tabs(["Graph", "Table"])
 
@@ -291,16 +291,20 @@ def plot_box_plots():
                 x='지원여부',
                 y='매출액증가율_2023년',
                 color='지원유형',
-                title='매출액 증가율(2023년) - 양수값만 표시',
+                title='매출액 증가율 (2023년, 양수 값만)',
                 color_discrete_sequence=px.colors.qualitative.Set2,
                 template="plotly_white"
             )
-            # 로그 스케일 적용
+            # 로그 스케일 유지하고 눈금 수동 설정
             fig_sales_growth.update_layout(
                 xaxis_title="지원 유형",
                 yaxis_title="매출액 증가율 (%)",
                 title_font_size=20,
-                yaxis=dict(type='log')  # 로그 스케일 적용
+                yaxis=dict(
+                    type='log',
+                    tickvals=[1, 10, 100, 1000],  # 수동으로 설정할 눈금 값
+                    ticktext=['1%', '10%', '100%', '1000%']  # 눈금에 표시할 텍스트
+                )
             )
             st.plotly_chart(fig_sales_growth, use_container_width=True)
 
@@ -308,7 +312,7 @@ def plot_box_plots():
         with tab2:
             st.dataframe(df_positive_sales_growth[['기업명', '지원유형', '매출액증가율_2023년']], hide_index=True)
 
-    # 오른쪽: 영업이익율 (양수 값만 로그 스케일 적용)
+    # 오른쪽: 영업이익율 (로그 스케일 적용 + 눈금 조정)
     with right_col:
         tab3, tab4 = st.tabs(["Graph", "Table"])
 
@@ -319,16 +323,20 @@ def plot_box_plots():
                 x='지원여부',
                 y='영업이익율_2023년',
                 color='지원유형',
-                title='영업이익율 (2023년) - 양수값만 표시',
+                title='영업이익율 (2023년, 양수 값만)',
                 color_discrete_sequence=px.colors.qualitative.Set2,
                 template="plotly_white"
             )
-            # 로그 스케일 적용
+            # 로그 스케일 유지하고 눈금 수동 설정
             fig_profit_margin.update_layout(
                 xaxis_title="지원 유형",
                 yaxis_title="영업이익율 (%)",
                 title_font_size=20,
-                yaxis=dict(type='log')  # 로그 스케일 적용
+                yaxis=dict(
+                    type='log',
+                    tickvals=[1, 10, 100],  # 수동으로 설정할 눈금 값
+                    ticktext=['1%', '10%', '100%']  # 눈금에 표시할 텍스트
+                )
             )
             st.plotly_chart(fig_profit_margin, use_container_width=True)
 
