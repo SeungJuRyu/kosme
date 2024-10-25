@@ -91,9 +91,9 @@ def convert_to_numeric(column):
 # Home 함수
 def Home():
     with st.expander("Tabular"):
-        showData = st.multiselect('Filter: ', df_selection_reset.columns, default=[])
-        st.write(df_selection_reset[showData])
-
+        showData = st.multiselect('Filter: ', df_selection.columns, default=[])
+        st.write(df_selection[showData])
+        
     # 숫자로 변환 후 계산
     매출액_2023년_numeric = convert_to_numeric("매출액_2023년")
     일인당매출액_2023년_numeric = convert_to_numeric("1인당매출액_2023년")
