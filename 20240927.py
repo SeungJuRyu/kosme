@@ -291,7 +291,7 @@ def plot_box_plots():
                 x='지원여부',
                 y='매출액증가율_2023년',
                 color='지원유형',
-                title='매출액 증가율 (2023년)',
+                title='매출액 증가율(2023년) - 양수값만 표시',
                 color_discrete_sequence=px.colors.qualitative.Set2,
                 template="plotly_white"
             )
@@ -319,7 +319,7 @@ def plot_box_plots():
                 x='지원여부',
                 y='영업이익율_2023년',
                 color='지원유형',
-                title='영업이익율 (2023년)',
+                title='영업이익율 (2023년) - 양수값만 표시',
                 color_discrete_sequence=px.colors.qualitative.Set2,
                 template="plotly_white"
             )
